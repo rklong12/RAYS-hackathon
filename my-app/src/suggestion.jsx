@@ -17,7 +17,7 @@ function GeminiMeaningOfLife() {
       console.log("suggestion is handling click");
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Or the appropriate Gemini model name
-      const prompt = "What is the meaning of life?";
+      const prompt = "What altered recipes can I make with the given ingredients and provided recipes:"; // Or any other prompt 
 
       const result = await model.generateContent(prompt);
       setResponse(result.response.text());
