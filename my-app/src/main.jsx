@@ -4,14 +4,20 @@ import './index.css'
 import App from './App.jsx'
 import IngredientIdentifier from './Scanner.jsx'
 import ImageUpload from './imageUpload.jsx'
+import RecipeInput from './oldRecipe.jsx'
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/*
-    <App /> 
-    */}
+
+    <title>recipe scanner</title>
+    
+    <RecipeInput />
 
     <ImageUpload />
     <IngredientIdentifier />
+
+
+
   </StrictMode>,
 )
