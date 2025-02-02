@@ -5,6 +5,7 @@ import App from './App.jsx'
 import IngredientIdentifier from './Scanner.jsx'
 import ImageUpload from './imageUpload.jsx'
 import RecipeInput from './oldRecipe.jsx'
+import GeminiMeaningOfLife from './suggestion.jsx'
 
 
 createRoot(document.getElementById('root')).render(
@@ -16,7 +17,7 @@ createRoot(document.getElementById('root')).render(
 
     <ImageUpload />
     <IngredientIdentifier />
-
+    <GeminiMeaningOfLife />
 
 
   </StrictMode>,
