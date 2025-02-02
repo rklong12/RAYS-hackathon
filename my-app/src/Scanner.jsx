@@ -16,24 +16,25 @@ function IngredientIdentifier() {
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImageSrc(imageSrc);
-
     if (imageSrc) {
       try {
+        console.log("preloading")
         setLoading(true);
         setError(null)
-        const response = await axios.post(
-          `https://detect.roboflow.com/${ROBOFLOW_MODEL_ID}/${ROBOFLOW_VERSION}`,
-          { image: imageSrc },  // Sending image data directly (better alternative to base64)
-          {
+        const response = await axios({
+            method: "POST",
+            url: `https://detect.roboflow.com/${ROBOFLOW_MODEL_ID}/${ROBOFLOW_VERSION}`,
+            params: {
+              api_key: ROBOFLOW_API_KEY,
+            },
+            data: imageSrc,
             headers: {
-              'Authorization': `Bearer ${ROBOFLOW_API_KEY}`,
               'Content-Type': 'application/x-www-form-urlencoded',
             },
-            params: {
-              format:'json' // ensures you get back JSON, not a full image with bounding boxes rendered on top
-            }
           }
         );
+        console.log("hello");
+        console.log(response.data);
         setPredictions(response.data.predictions || []); // Handle potential missing 'predictions'
         setLoading(false);
       } catch (err) {
@@ -43,9 +44,7 @@ function IngredientIdentifier() {
         setPredictions([]); // Clear previous predictions on error
       }
     }
-
-
-  };
+};
 
   const renderPredictions = () => {
     if (loading) {
