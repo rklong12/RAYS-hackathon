@@ -1,52 +1,42 @@
+// server/index.js
 const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+const { MongoClient } = require('mongodb');
+require('dotenv').config(); // Load environment variables
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+const port = process.env.PORT || 5000;  // Use port from environment or 5000
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/recipeDB', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.log('Error connecting to MongoDB:', err));
+const uri = process.env.MONGODB_URI; // Your MongoDB connection string
 
-// Define a Recipe schema
-const recipeSchema = new mongoose.Schema({
-  title: String,
-  ingredients: [{ name: String, amount: String }],
-  steps: [String],
-  cookingTime: String,
-  difficulty: String,
-  cuisine: String
-});
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Create a Recipe model
-const Recipe = mongoose.model('Recipe', recipeSchema);
-
-// API route to get all recipes
-app.get('/recipes', async (req, res) => {
+async function connectToDatabase() {
   try {
-    const recipes = await Recipe.find();
-    res.json(recipes);
-  } catch (err) {
-    res.status(500).send('Error retrieving recipes');
+    await client.connect();
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    process.exit(1); // Exit the process if the connection fails
+  }
+}
+
+connectToDatabase();
+
+app.use(express.json()); // Enable parsing JSON request bodies
+
+// Example route to fetch data
+app.get('/api/items', async (req, res) => {
+  try {
+    const db = client.db("your_database_name"); // Replace with your DB name
+    const collection = db.collection("your_collection_name"); // Replace with your collection name
+    const items = await collection.find({}).toArray(); // Fetch all items
+    res.json(items);
+  } catch (error) {
+    console.error("Error fetching items:", error);
+    res.status(500).json({ message: "Error fetching items" });
   }
 });
 
-// API route to add a new recipe
-app.post('/recipes', async (req, res) => {
-  try {
-    const newRecipe = new Recipe(req.body);
-    await newRecipe.save();
-    res.status(201).send('Recipe added');
-  } catch (err) {
-    res.status(500).send('Error adding recipe');
-  }
-});
-
-// Start server
-const port = 5000;
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server listening on port ${port}`);
 });
