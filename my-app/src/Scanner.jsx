@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import Webcam from 'react-webcam';
 import axios from 'axios'; // Or your preferred HTTP client
 
@@ -12,6 +12,14 @@ function IngredientIdentifier() {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [predictionList, setPredictionList] = useState(() => {
+    const storedList = localStorage.getItem('predictionList');
+    return storedList ? JSON.parse(storedList) : [];
+  })
+  
+  useEffect(() => {
+    localStorage.setItem('predictionList', JSON.stringify(predictionList));
+  }, [predictionList]);
 
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -35,8 +43,15 @@ function IngredientIdentifier() {
         );
         console.log("hello");
         console.log(response.data);
+
         setPredictions(response.data.predictions || []); // Handle potential missing 'predictions'
         setLoading(false);
+
+        if (response.data.predictions && response.data.predictions.length > 0) {
+          const newIngredients = response.data.predictions.map(prediction => prediction.class);
+          setPredictionList(prevList => [...prevList, ...newIngredients]); // Add new ingredients to the list
+        }
+        console.log(predictionList);
       } catch (err) {
         console.error("Error with Roboflow API:", err);
         setError("Error identifying ingredients. Please try again.");
