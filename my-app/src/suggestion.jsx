@@ -97,8 +97,8 @@ function GeminiMeaningOfLife() {
           </label>
         ))}
       </div>
-      <button onClick={handleClick} disabled={isLoading} style={{ marginTop: '1rem' }}>
-        {isLoading ? 'Asking Gemini...' : 'What is the meaning of life?'}
+      <button onClick={handleClick} disabled={isLoading}>
+        {isLoading ? 'Asking Gemini...' : 'Suggest recipes!'}
       </button>
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       {response && (
