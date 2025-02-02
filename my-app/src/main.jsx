@@ -11,6 +11,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
 
     <title>recipe scanner</title>
+    <img src="spice of life.webp" alt="spice of life" class="logo"/>
     
     <RecipeInput />
 
