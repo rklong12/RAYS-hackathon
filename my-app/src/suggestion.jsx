@@ -6,6 +6,8 @@ function GeminiMeaningOfLife() {
   const [response, setResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [recipes, setRecipes] = useState('');
+  const [predictions, setPredictions] = useState('');
 
   const apiKey = "AIzaSyCK4-pO3rdjk_zrxWseDEfgAwPAlYWvOQs"; // Store API key securely
 
@@ -14,15 +16,28 @@ function GeminiMeaningOfLife() {
     setError(null);
 
     try {
-      console.log("suggestion is handling click");
+      setRecipes(localStorage.getItem('recipes'));
+      setPredictions(localStorage.getItem('predictionList'));
+
+      let historicalRecipesString = "";
+      if (recipes) {
+        const recipeList = JSON.parse(recipes);
+        historicalRecipesString = recipeList.map(recipe => `${recipe.name} with ${recipe.ingredients}`).join(", ");
+      }
+
+      let newIngredientsString = "";
+      if (predictions) {
+            const predictionList = JSON.parse(predictions);
+            newIngredientsString = predictionList.join(", ");
+      }
+
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Or the appropriate Gemini model name
-      const prompt = "What altered recipes can I make with the given ingredients and provided recipes:"; // Or any other prompt 
-
+      const prompt = `Historically I have cooked ${historicalRecipesString}. Please suggest me 3-4 new recipes that utilize ${newIngredientsString} and are adjacent to my historical recipes.`;
+      console.log(prompt)
       const result = await model.generateContent(prompt);
       setResponse(result.response.text());
       
-      console.log(result.response.text());
 
     } catch (err) {
       console.error("Error querying Gemini API:", err);
