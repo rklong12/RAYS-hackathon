@@ -66,3 +66,10 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+logo {
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
