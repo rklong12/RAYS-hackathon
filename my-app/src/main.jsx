@@ -6,7 +6,7 @@ import IngredientIdentifier from './Scanner.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    {/*<App />*/}
     <IngredientIdentifier />
   </StrictMode>,
 )
