@@ -50,7 +50,7 @@ function GeminiMeaningOfLife() {
   return (
     <div>
       <button onClick={handleClick} disabled={isLoading}>
-        {isLoading ? 'Asking Gemini...' : 'What is the meaning of life?'}
+        {isLoading ? 'Asking Gemini...' : 'Suggest recipes!'}
       </button>
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       {response && (
