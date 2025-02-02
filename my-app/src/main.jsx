@@ -6,6 +6,7 @@ import IngredientIdentifier from './Scanner.jsx'
 import ImageUpload from './imageUpload.jsx'
 import RecipeInput from './oldRecipe.jsx'
 import GeminiMeaningOfLife from './suggestion.jsx'
+import ClearLocalButton from './clearLocal.jsx'
 
 
 createRoot(document.getElementById('root')).render(
@@ -18,6 +19,8 @@ createRoot(document.getElementById('root')).render(
 
     <ImageUpload />
     <IngredientIdentifier />
+
+    <ClearLocalButton />
     <GeminiMeaningOfLife />
 
 
